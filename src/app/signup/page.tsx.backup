@@ -1,0 +1,295 @@
+
+"use client";
+
+import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Eye, EyeOff, CheckCircle, ArrowRight, Sparkles } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/use-auth";
+import { Badge } from "@/components/ui/badge";
+import { ProfileCompletionModal } from "@/components/profile-completion-modal";
+
+const formSchema = z.object({
+  email: z.string().email("Invalid email address."),
+  password: z.string().min(6, "Password must be at least 6 characters."),
+  confirmPassword: z.string(),
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords do not match.",
+  path: ["confirmPassword"],
+});
+
+export default function SignUpPage() {
+  const { toast } = useToast();
+  const { signup } = useAuth();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const [step, setStep] = React.useState(1);
+  const [profileModalOpen, setProfileModalOpen] = React.useState(false);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log('🚀 Sign-up form submitted with values:', values);
+    setIsLoading(true);
+    try {
+      console.log('📧 Attempting to create user account...');
+      await signup(values.email, values.password);
+      console.log('✅ User account created successfully');
+      toast({
+        title: "Welcome to FixMo! 🎉",
+        description: "Your account has been created successfully. Let's set up your profile!",
+      });
+      // Open profile completion modal instead of redirecting
+      setProfileModalOpen(true);
+    } catch (error: any) {
+      console.error('❌ Sign-up failed:', error);
+      toast({
+        variant: "destructive",
+        title: "Signup Failed",
+        description: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleProfileComplete = () => {
+    setProfileModalOpen(false);
+    toast({
+      title: "Profile Setup Complete! 🎉",
+      description: "You're all set to start helping and getting help in your community.",
+    });
+    router.push("/dashboard");
+  };
+
+  const handleProfileSkip = () => {
+    setProfileModalOpen(false);
+    toast({
+      title: "Welcome to FixMo!",
+      description: "You can complete your profile later from your dashboard.",
+    });
+    router.push("/dashboard");
+  };
+
+  const benefits = [
+    "Connect with trusted local helpers",
+    "Earn money by offering your skills", 
+    "Secure payments and verification",
+    "24/7 Fixmotech support"
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left side - Benefits */}
+        <div className="hidden lg:flex flex-col justify-center space-y-8">
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Sparkles className="h-6 w-6 text-primary" />
+              </div>
+              <h1 className="text-3xl font-bold gradient-text">Join FixMo Today</h1>
+            </div>
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              Your trusted neighborhood marketplace for tasks and skills. Connect with reliable people in your community.
+            </p>
+          </div>
+          
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Why choose FixMo?</h3>
+            <div className="space-y-3">
+              {benefits.map((benefit, index) => (
+                <div key={index} className="flex items-center gap-3">
+                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <span className="text-muted-foreground">{benefit}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6">
+            <div className="flex items-center gap-3 mb-3">
+              <Badge variant="outline" className="bg-blue-500/10 text-blue-600 border-blue-500/20">
+                Fixmotech
+              </Badge>
+              <span className="text-sm font-medium">AI-Powered Verification</span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Our advanced verification system ensures you connect with real, trustworthy people in your community.
+            </p>
+          </div>
+        </div>
+
+        {/* Right side - Sign up form */}
+        <div className="flex items-center justify-center">
+          <Card className="w-full max-w-md">
+            <CardHeader className="text-center space-y-4">
+              <div className="mx-auto p-3 bg-primary/10 rounded-full w-fit">
+                <Sparkles className="h-8 w-8 text-primary" />
+              </div>
+              <div>
+                <CardTitle className="text-2xl font-bold">Create Your Account</CardTitle>
+                <CardDescription className="mt-2">
+                  Join thousands of users helping each other in their communities
+                </CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit((values) => {
+                  console.log('🎯 Form handleSubmit called with values:', values);
+                  return onSubmit(values);
+                })} className="space-y-6">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">Email Address</FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="email" 
+                            placeholder="you@example.com" 
+                            className="h-11"
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">Password</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input 
+                              type={showPassword ? "text" : "password"} 
+                              placeholder="••••••••" 
+                              className="h-11 pr-10"
+                              {...field} 
+                            />
+                            <button 
+                              type="button" 
+                              onClick={() => setShowPassword(!showPassword)} 
+                              className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                              {showPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                            </button>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">Confirm Password</FormLabel>
+                        <FormControl>
+                           <div className="relative">
+                            <Input 
+                              type={showConfirmPassword ? "text" : "password"} 
+                              placeholder="••••••••" 
+                              className="h-11 pr-10"
+                              {...field} 
+                            />
+                            <button 
+                              type="button" 
+                              onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+                              className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                              {showConfirmPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                            </button>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <Button 
+                    type="submit" 
+                    size="lg" 
+                    className="w-full h-11 font-medium" 
+                    disabled={isLoading}
+                    onClick={() => console.log('🔘 Submit button clicked')}
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center gap-2">
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                        Creating Account...
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        Get Started
+                        <ArrowRight className="h-4 w-4" />
+                      </div>
+                    )}
+                  </Button>
+                </form>
+              </Form>
+              
+              <div className="mt-6 text-center">
+                <p className="text-sm text-muted-foreground">
+                  Already have an account?{" "}
+                  <Link href="/login" className="font-semibold text-primary hover:underline transition-colors">
+                    Log In
+                  </Link>
+                </p>
+              </div>
+              
+              <div className="mt-6 pt-6 border-t border-border/50">
+                <p className="text-xs text-muted-foreground text-center">
+                  By creating an account, you agree to our{" "}
+                  <Link href="#" className="underline hover:text-foreground transition-colors">Terms of Service</Link>
+                  {" "}and{" "}
+                  <Link href="#" className="underline hover:text-foreground transition-colors">Privacy Policy</Link>
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+      
+      {/* Profile Completion Modal */}
+      <ProfileCompletionModal
+        isOpen={profileModalOpen}
+        onClose={handleProfileSkip}
+        onComplete={handleProfileComplete}
+      />
+    </div>
+  );
+}

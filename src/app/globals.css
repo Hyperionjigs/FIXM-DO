@@ -1,0 +1,454 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 217 91% 60%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 217 91% 60%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  /* Enhanced focus indicators for accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Custom animations for FixMo header - Mobile Only */
+@layer components {
+  .fixmo-header {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .fixmo-header.at-top {
+    top: 1rem;
+    left: auto;
+    right: auto;
+    margin: 0 auto;
+    max-width: 80rem;
+    padding: 0 1rem;
+    transform: none;
+  }
+  
+  .fixmo-header.scrolled {
+    top: 0;
+    left: 0;
+    right: auto;
+    margin: 0;
+    max-width: none;
+    padding: 0;
+    transform: none;
+  }
+  
+  .fixmo-header-content {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .fixmo-header-content.at-top {
+    border-radius: 1rem;
+    flex-direction: row !important;
+    width: auto;
+    height: auto;
+    padding: 0.5rem;
+    position: relative;
+    left: auto;
+    top: auto;
+    margin: 0;
+  }
+  
+  .fixmo-header-content.scrolled {
+    display: none;
+  }
+  
+  .fixmo-nav.at-top {
+    flex-direction: row !important;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .fixmo-nav.scrolled {
+    display: none;
+  }
+  
+  .fixmo-logo.at-top {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed;
+    transform: none !important;
+  }
+  
+  .fixmo-logo.scrolled {
+    display: none;
+  }
+  
+  .fixmo-controls.at-top {
+    flex-direction: row !important;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .fixmo-controls.scrolled {
+    display: none;
+  }
+}
+
+/* Desktop: No animation - keep original static header */
+@media (min-width: 768px) {
+  .fixmo-header,
+  .fixmo-header-content,
+  .fixmo-nav,
+  .fixmo-logo,
+  .fixmo-controls {
+    transition: none !important;
+  }
+  
+  .fixmo-header.scrolled,
+  .fixmo-header-content.scrolled,
+  .fixmo-nav.scrolled,
+  .fixmo-logo.scrolled,
+  .fixmo-controls.scrolled {
+    /* Reset all scrolled styles on desktop */
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    margin: 0 auto !important;
+    max-width: 80rem !important;
+    padding: 0 1rem !important;
+    transform: none !important;
+    flex-direction: row !important;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 1rem !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    font-size: 1.25rem !important;
+    line-height: 1.75rem !important;
+    font-weight: bold !important;
+    color: hsl(var(--primary)) !important;
+    gap: 1rem !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  
+  .fixmo-nav.scrolled .nav-item {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    transform: none !important;
+    font-size: inherit !important;
+    padding: inherit !important;
+    min-height: inherit !important;
+    height: inherit !important;
+  }
+}
+
+/* Enhanced UX Animations */
+@layer utilities {
+  /* Smooth transitions for interactive elements */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Hover effects for cards */
+  .card-hover {
+    @apply transition-smooth hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  /* Button hover animations */
+  .btn-hover {
+    @apply transition-smooth hover:scale-105 active:scale-95;
+  }
+  
+  /* Loading spinner animation */
+  .spinner {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Glow effect for AI suggestions */
+  .glow-effect {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+    }
+    to {
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.6);
+    }
+  }
+  
+  /* Fade in animation */
+  .fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Slide in animation */
+  .slide-in {
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Pulse animation for attention */
+  .pulse-attention {
+    animation: pulseAttention 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulseAttention {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  /* Larger touch targets for mobile */
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better spacing for mobile */
+  .mobile-spacing {
+    @apply space-y-4;
+  }
+  
+  /* Optimized text sizes for mobile */
+  .mobile-text {
+    @apply text-base leading-relaxed;
+  }
+  
+  /* Mobile-friendly buttons */
+  .mobile-btn {
+    @apply h-12 px-6 text-base;
+  }
+  
+  /* Better mobile navigation */
+  .mobile-nav {
+    @apply fixed bottom-0 left-0 right-0 bg-background border-t z-50;
+  }
+}
+
+/* Enhanced form styling */
+.form-enhanced {
+  @apply transition-smooth;
+}
+
+.form-enhanced:focus-within {
+  @apply ring-2 ring-primary/20;
+}
+
+/* Progress bar animations */
+.progress-animated {
+  transition: width 0.3s ease-in-out;
+}
+
+/* Toast animations */
+.toast-enter {
+  animation: toastEnter 0.3s ease-out;
+}
+
+.toast-exit {
+  animation: toastExit 0.3s ease-in;
+}
+
+@keyframes toastEnter {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toastExit {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Enhanced card interactions */
+.card-interactive {
+  @apply transition-smooth cursor-pointer;
+}
+
+.card-interactive:hover {
+  @apply shadow-lg transform -translate-y-1;
+}
+
+.card-interactive:active {
+  @apply transform scale-95;
+}
+
+/* Loading states */
+.loading-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Accessibility improvements */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .border {
+    border-width: 2px;
+  }
+  
+  .ring {
+    ring-width: 3px;
+  }
+}
+
+

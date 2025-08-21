@@ -1,0 +1,107 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "prettier"
+  ],
+  "plugins": [
+    "jest",
+    "testing-library"
+  ],
+  "rules": {
+    // Security rules
+    "no-eval": "error",
+    "no-implied-eval": "error",
+    "no-new-func": "error",
+    "no-script-url": "error",
+    "no-unsafe-finally": "error",
+    "no-unsafe-optional-chaining": "error",
+    "no-unsafe-unary-negation": "error",
+    "require-atomic-updates": "error",
+    
+    // Code quality rules
+    "no-console": "warn",
+    "no-debugger": "error",
+    "no-alert": "warn",
+    "no-var": "error",
+    "prefer-const": "error",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-undef": "error",
+    
+    // React specific rules
+    "react/jsx-key": "error",
+    "react/jsx-no-duplicate-props": "error",
+    "react/jsx-no-undef": "error",
+    "react/no-array-index-key": "warn",
+    "react/no-danger": "warn",
+    "react/no-deprecated": "error",
+    "react/no-direct-mutation-state": "error",
+    "react/no-find-dom-node": "error",
+    "react/no-is-mounted": "error",
+    "react/no-render-return-value": "error",
+    "react/no-string-refs": "error",
+    "react/no-unescaped-entities": "error",
+    "react/no-unknown-property": "error",
+    "react/no-unsafe": "error",
+    "react/self-closing-comp": "error",
+    "react/sort-comp": "error",
+    "react/sort-prop-types": "off",
+    "react/style-prop-object": "error",
+    "react/void-dom-elements-no-children": "error",
+    
+    // TypeScript rules
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-non-null-assertion": "warn",
+    
+    // Testing rules
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error",
+    "testing-library/await-async-queries": "error",
+    "testing-library/no-await-sync-queries": "error",
+    "testing-library/no-container": "error",
+    "testing-library/no-debugging-utils": "warn",
+    "testing-library/no-dom-import": "error",
+    "testing-library/no-node-access": "error",
+    "testing-library/no-promise-in-fire-event": "error",
+    "testing-library/no-render-in-setup": "error",
+    "testing-library/no-unnecessary-act": "error",
+    "testing-library/no-wait-for-empty-callback": "error",
+    "testing-library/no-wait-for-multiple-assertions": "error",
+    "testing-library/no-wait-for-side-effects": "error",
+    "testing-library/no-wait-for-snapshot": "error",
+    "testing-library/prefer-find-by": "error",
+    "testing-library/prefer-presence-queries": "error",
+    "testing-library/prefer-query-by-disappearance": "error",
+    "testing-library/prefer-screen-queries": "error",
+    "testing-library/render-result-naming-convention": "error"
+  },
+  "env": {
+    "jest": true,
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "overrides": [
+    {
+      "files": ["**/__tests__/**/*", "**/*.{test,spec}.*"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "no-console": "off",
+        "@typescript-eslint/no-explicit-any": "off"
+      }
+    }
+  ]
+} 

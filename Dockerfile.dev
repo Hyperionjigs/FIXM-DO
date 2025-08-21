@@ -1,0 +1,29 @@
+# Development Dockerfile for FixMo application
+# Optimized for development with hot reloading
+
+FROM node:18-alpine
+
+# Install dependencies for native modules
+RUN apk add --no-cache libc6-compat
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package.json package-lock.json* ./
+
+# Install all dependencies (including dev dependencies)
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Set environment variables
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Expose port
+EXPOSE 3000
+
+# Start development server
+CMD ["npm", "run", "dev"] 
